@@ -31,15 +31,60 @@ window.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
-
-
     };
     headerFooter();
 
     //аккордеон
     const accordion = () => {
-        const panel = document.querySelectorAll('.panel-default');
-        console.log(panel);
+        const panel = document.querySelectorAll('.panel-collapse'),
+            panelGroup = document.querySelectorAll('.panel-group'),
+            nextBtn = document.querySelectorAll('.construct-btn'),
+            panelHeading = document.querySelectorAll('.panel-heading');
+        
+        console.log(nextBtn);
+        const accordionShow = (index) => {
+            for(let i = 0; i < panelHeading.length; i++){
+                if(index === i){
+                    panel[i].classList.add('in');
+                } else {
+                    panel[i].classList.remove('in');
+                }
+            }
+        };
+
+        panelGroup.forEach((elem) => {
+            elem.addEventListener('click', (event) => {
+           let target = event.target;
+            target = target.closest('.panel-heading');
+
+            if(target){
+                panelHeading.forEach((item, i) => {
+                if(item === target){ 
+                accordionShow(i);
+            }       
+        });
+        } 
+        });
+    });
+
+
+  
+        nextBtn.forEach((elem) => {
+            elem.addEventListener('click', (event) => {
+                    let target = event.target;
+                        target = target.closest('.panel');
+
+                    if(target){
+                        panelHeading.forEach((item, i) => {
+                            if(item === target){
+                                console.log(1);
+                                accordionShow(i);
+                            }
+                        });
+                    }  
+            });
+        });
+
     };
     accordion();
 
