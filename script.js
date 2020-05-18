@@ -39,9 +39,10 @@ window.addEventListener('DOMContentLoaded', function() {
         const panel = document.querySelectorAll('.panel-collapse'),
             panelGroup = document.querySelectorAll('.panel-group'),
             nextBtn = document.querySelectorAll('.construct-btn'),
+            panelBody = document.querySelectorAll('.panel-body'),
             panelHeading = document.querySelectorAll('.panel-heading');
         
-        console.log(nextBtn);
+      
         const accordionShow = (index) => {
             for(let i = 0; i < panelHeading.length; i++){
                 if(index === i){
@@ -54,12 +55,17 @@ window.addEventListener('DOMContentLoaded', function() {
 
         panelGroup.forEach((elem) => {
             elem.addEventListener('click', (event) => {
-           let target = event.target;
+            let target = event.target;
             target = target.closest('.panel-heading');
 
             if(target){
+                
                 panelHeading.forEach((item, i) => {
-                if(item === target){ 
+                    // console.log(item === target);
+                    // console.log('target',  target);
+                    // console.log('item', item);
+                    
+                    if(item === target){ 
                 accordionShow(i);
             }       
         });
@@ -67,21 +73,21 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-
-  
         nextBtn.forEach((elem) => {
             elem.addEventListener('click', (event) => {
                     let target = event.target;
-                        target = target.closest('.panel');
-
+                        target = target.closest('.collapsed');
+                    
+                    console.log(target);
                     if(target){
-                        panelHeading.forEach((item, i) => {
+                        nextBtn.forEach((item, i) => {
+                            console.log(item);
                             if(item === target){
-                                console.log(1);
                                 accordionShow(i);
                             }
-                        });
-                    }  
+                        })
+                    }
+                    
             });
         });
 
@@ -89,6 +95,24 @@ window.addEventListener('DOMContentLoaded', function() {
     accordion();
 
 
+    //кнопка больше
+    const addBtn = () => {
+        const btn = document.querySelector('.add-sentence-btn'),
+              blocks = document.querySelectorAll('.shadow-block');
 
+        console.log(blocks);
+
+        btn.addEventListener('click', () => {
+            for(let i = 3; i < blocks.length; i++){
+                console.log(blocks[i]);
+                blocks[i].style.display = 'block';
+            }
+        })
+
+
+
+
+    };
+    addBtn();
 
 });
