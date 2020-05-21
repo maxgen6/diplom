@@ -45,11 +45,18 @@ window.addEventListener('DOMContentLoaded', function() {
         
       
         const accordionShow = (index) => {
+            let opacity = 0;
             for(let i = 0; i < panelHeading.length; i++){
+                
+                panel[i].style.opacity = opacity;
                 if(index === i){
-                    panel[i].classList.add('in');
+
+                    panel[i].style.display = 'block';
+                    opacity += 0.1;
+                    panel[i].style.opacity = opacity;
+                    
                 } else {
-                    panel[i].classList.remove('in');
+                    panel[i].style.display = 'none';
                 }
             }
         };
@@ -62,8 +69,11 @@ window.addEventListener('DOMContentLoaded', function() {
             if(target){
                 
                 panelHeading.forEach((item, i) => {                  
-                    if(item === target){ 
-                accordionShow(i);
+                    if(item === target){                         
+                        {
+                            console.log(accordionShow.opacity);
+                            setTimeout(accordionShow(i), 2000);
+                        };
             }       
         });
         } 
@@ -244,7 +254,7 @@ window.addEventListener('DOMContentLoaded', function() {
                     }
                     if(secondDiam.value === '1.4 метра'){  
                         if(secondHow.value === '1 штука'){
-                        price = price; 
+                        
                         calcResult.value = price;
                     } else  if(secondHow.value === '2 штуки'){
                         price += 0.3 * price;
@@ -256,7 +266,7 @@ window.addEventListener('DOMContentLoaded', function() {
                 } else if(secondDiam.value === '2 метра'){
                         price += 0.2 * price;
                     if(secondHow.value === '1 штука'){
-                        price = price;
+                       
                         calcResult.value = price;
                     } else  if(secondHow.value === '2 штуки'){
                         price += 0.3 * price;
@@ -352,7 +362,10 @@ window.addEventListener('DOMContentLoaded', function() {
                 event.preventDefault();
                 form.appendChild(statusMessage);
                 statusMessage.textContent = loadMessage;
-
+                document.querySelectorAll('.phone-user').forEach((elem) => elem.value = '');
+                document.getElementsByName('user_name').forEach((elem) => elem.value = '');
+                document.querySelectorAll('.user_quest').forEach((elem) => elem.value = '');
+                
                 const formData = new FormData(form);
 
                 let body = {};
@@ -367,10 +380,18 @@ window.addEventListener('DOMContentLoaded', function() {
                             throw new Error('status network now 200');
                         }
                         statusMessage.textContent = succesMessage;
+                        form.reset();
+                        setTimeout(() => {
+                            statusMessage.remove();
+                        }, 5000);
                     })
                     .catch((error) => {
                         statusMessage.textContent = errorMessage;
-                        console.err(error);
+                        console.log(error);
+                        form.reset();
+                        setTimeout(() => {
+                            statusMessage.remove();
+                        }, 5000);
                     });
             
             });
