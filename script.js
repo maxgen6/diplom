@@ -47,17 +47,11 @@ window.addEventListener('DOMContentLoaded', function() {
         const accordionShow = (index) => {
             let opacity = 0;
             for(let i = 0; i < panelHeading.length; i++){
-                
-                panel[i].style.opacity = opacity;
-                if(index === i){
-
-                    panel[i].style.display = 'block';
-                    opacity += 0.1;
-                    panel[i].style.opacity = opacity;
-                    
-                } else {
-                    panel[i].style.display = 'none';
-                }
+            if(index === i){
+                panel[i].classList.add('in');
+            } else {
+                panel[i].classList.remove('in');
+            }
             }
         };
 
@@ -71,7 +65,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 panelHeading.forEach((item, i) => {                  
                     if(item === target){                         
                         {
-                            console.log(accordionShow.opacity);
                             setTimeout(accordionShow(i), 2000);
                         };
             }       
@@ -198,8 +191,11 @@ window.addEventListener('DOMContentLoaded', function() {
             let target = event.target;
             if(target.classList.contains('popup-close')){
                 popupConsultation.style.display = 'none';
-            } else if(target !== target.closest('.popup-content')){
+            } else {
+                target.closest('.popup-content');
+                if(!target){
                 popupConsultation.style.display = 'none';
+            }
             }
         });
 
@@ -276,13 +272,10 @@ window.addEventListener('DOMContentLoaded', function() {
                         calcResult.value = price;
                     }
                 }
-
             }
             }); 
             };
                 
-
-
         const label = document.querySelectorAll('.onoffswitch-label'),            
             checkBox = document.querySelector('.onoffswitch-checkbox'),
             selectBox = document.querySelectorAll('.select-box'),
@@ -313,6 +306,19 @@ window.addEventListener('DOMContentLoaded', function() {
     
     let count = 0;
     label[1].addEventListener('click', () => count ++);
+
+
+    const calcMemory = {
+        cameras: 0,
+        floors: 0,
+        diameterOneValue: firstDiam.value,
+        ringsOneValue: firstHow.value,
+        diameterTwoValue: secondDiam.value,
+        ringsTwoValue: secondHow.value,
+        sum: countSum.price,
+        distance: ''
+       };
+
 
 };
     calculator();
@@ -355,6 +361,17 @@ window.addEventListener('DOMContentLoaded', function() {
         };
         validate();
 
+        const postData = (body) => {
+            return fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body),
+                credentials: 'include'
+            });
+        };
+
 
         forms.forEach(form => {
             validate(form);
@@ -362,18 +379,24 @@ window.addEventListener('DOMContentLoaded', function() {
                 event.preventDefault();
                 form.appendChild(statusMessage);
                 statusMessage.textContent = loadMessage;
-                document.querySelectorAll('.phone-user').forEach((elem) => elem.value = '');
-                document.getElementsByName('user_name').forEach((elem) => elem.value = '');
-                document.querySelectorAll('.user_quest').forEach((elem) => elem.value = '');
+                
                 
                 const formData = new FormData(form);
 
                 let body = {};
-
+                // body['cameras'] = calculator.calcMemory.cameras;
+                // body['floors'] = calculator.calcMemory.floors;
+                // body['diameterOneValue'] = calculator.calcMemory.diameterOneValue;
+                // body['ringsOneValue'] = calculator.calcMemory.diameterOneValue;
+                // body['diameterTwoValue'] = calculator.calcMemory.diameterTwoValue;
+                // body['ringsTwoValue'] = calculator.calcMemory.diameterTwoValue;
+                // body['sum'] = calculator.calcMemory.sum;
+                // body['distance'] = calculator.calcMemory.distance;
+                
                 formData.forEach((val, key) => {
                     body[key] = val;
                 });
-                
+                console.log(body);
                 postData(body)
                     .then((response) => {
                         if(response.status !== 200){
@@ -397,16 +420,7 @@ window.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        const postData = (body) => {
-            return fetch('./server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-type':'application/json'
-                },
-                body: JSON.stringify(body),
-                credentials: 'include'
-            });
-        };
+        
 
 
     };
